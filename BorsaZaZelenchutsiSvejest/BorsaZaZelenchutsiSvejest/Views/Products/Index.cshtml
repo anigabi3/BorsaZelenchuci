@@ -1,0 +1,104 @@
+﻿@model IEnumerable<BorsaZaZelenchutsiSvejest.Data.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<style>
+    body {
+        background-image: url(https://t3.ftcdn.net/jpg/01/18/17/52/360_F_118175297_GZcJbKj0f4Jemq8EDIXIYbUFuTpoMwLT.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    table{
+        vertical-align:middle;
+    }
+    thead{
+        background-color:greenyellow;
+    }
+    tbody{
+        background-color:white;
+    }
+    h1{
+        color:white;
+        text-shadow:3px 3px black;
+    }
+    footer{
+        border-top:10px black;
+        background-color: white;
+    }
+</style>
+<h1>Най-свежите зеленчуци само при нас!🥦</h1>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        <a class="btn btn-primary"asp-action="Create">Create New</a>
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Снимка
+            </th>
+            <th>
+                Зеленчук
+            </th>
+            <th>
+               Вид зеленчук
+            </th>
+            <th>
+                Каталожен номер
+            </th>
+            <th>
+                Цена
+            </th>
+          
+         
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id"><img src="@Html.DisplayFor(modelItem => item.ImageURL)" width="120"/></a>
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeProducts.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CatalogNumber)
+            </td>
+          
+            <td>
+                @Html.DisplayFor(modelItem => item.Price) лв.
+            </td>
+       
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <form method="get" asp-controller="Orders" asp-action="CreateWithProductId" asp-route-productId="@item.Id">
+                            <input name="productId" type="hidden" value="@item.Id" />
+                            <input name="countP" id="ccount" type="number" width="1" value="1" style="color:black; font:bold" /> броя
+                            <input type="submit" value="Поръчай" class="btn btn-primary" />
+                        </form>
+                    </td>
+                }
+       
+        </tr>
+}
+    </tbody>
+</table>

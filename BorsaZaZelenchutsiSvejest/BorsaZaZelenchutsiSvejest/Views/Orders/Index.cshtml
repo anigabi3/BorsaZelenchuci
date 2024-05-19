@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BorsaZaZelenchutsiSvejest.Data.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Поръчки</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Клиент
+            </th>
+            <th>
+                Поръчан продукт
+            </th>
+            <th>
+                Количество
+            </th>
+            <th>
+                Дата на поръчката
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                    @item.Clients.FirstName   @item.Clients.LastName
+            </td>
+            <td>
+                    <img src="@Html.DisplayFor(modelItem => item.Products.ImageURL)" width="110"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity) броя
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderOn)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
